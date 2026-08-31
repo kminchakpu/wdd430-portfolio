@@ -1,24 +1,7 @@
-type Project = {
-  id: number;
-  title: string;
-  description: string;
-  type: "opensource" | "school";
-  technologies: string[];
-  link?: string;
-};
+import { getProjects } from "@/lib/projects-db";
 
-async function getProjects(): Promise<Project[]> {
-  const response = await fetch("http://localhost:3000/api/projects");
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch projects.");
-  }
-
-  return response.json();
-}
-
-export default async function ProjectsPage() {
-  const projects = await getProjects();
+export default function ProjectsPage() {
+  const projects = getProjects();
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
@@ -30,6 +13,11 @@ export default async function ProjectsPage() {
         <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
           Projects Overview
         </h1>
+
+        <p className="mt-4 max-w-2xl text-lg leading-8 text-gray-600">
+          Explore the projects I have worked on while developing my skills in
+          modern web development.
+        </p>
 
         <div className="mt-8 grid gap-6 md:grid-cols-2">
           {projects.map((project) => (
@@ -59,6 +47,17 @@ export default async function ProjectsPage() {
               <p className="mt-4 text-sm font-medium capitalize text-blue-600">
                 {project.type}
               </p>
+
+              {project.link && (
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-5 inline-block font-semibold text-blue-600 hover:text-blue-800"
+                >
+                  View Project
+                </a>
+              )}
             </article>
           ))}
         </div>

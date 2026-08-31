@@ -1,26 +1,7 @@
-type Project = {
-  id: number;
-  title: string;
-  description: string;
-  type: "opensource" | "school";
-  technologies: string[];
-  link?: string;
-};
+import { getProjects } from "@/lib/projects-db";
 
-async function getSchoolProjects(): Promise<Project[]> {
-  const response = await fetch(
-    "http://localhost:3000/api/projects?type=school"
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch school projects.");
-  }
-
-  return response.json();
-}
-
-export default async function SchoolProjects() {
-  const projects = await getSchoolProjects();
+export default function SchoolProjects() {
+  const projects = getProjects("school");
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
