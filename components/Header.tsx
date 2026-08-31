@@ -30,6 +30,15 @@ export default function Header() {
                 About
               </Link>
             </li>
+
+            <li>
+              <Link
+                href="/projects"
+                className="font-play text-white transition-colors hover:text-[#FEC601]"
+              >
+                Projects
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
