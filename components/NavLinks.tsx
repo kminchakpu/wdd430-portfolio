@@ -24,7 +24,7 @@ export default function NavLinks() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <nav aria-label="Main navigation" className="relative">
+    <nav aria-label="Main navigation" className="relative" w-full={100}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -89,7 +89,7 @@ export default function NavLinks() {
         })}
       </ul>
       {isOpen && (
-        <ul className="absolute right-0 top-full z-50 mt-3 flex w-56 flex-col rounded-lg bg-slate-900 p-4 shadow-xl md:hidden">
+        <ul className="fixed left-0 right-0 top-14 z-50 flex flex-col bg-slate-900 p-4 shadow-xl md:hidden">
           {links.map((link) => {
             const isActive =
               link.href === "/"
