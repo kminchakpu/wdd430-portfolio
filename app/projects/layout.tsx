@@ -1,4 +1,23 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description:
+    "Explore Kevin's web development and software development projects, including school projects, open source work, and applications built with modern web technologies.",
+  keywords: [
+    "Web Development Projects",
+    "Software Development Projects",
+    "Programming Projects",
+    "Open Source Projects",
+    "School Projects",
+    "React Projects",
+    "Next.js Projects",
+    "TypeScript Projects",
+    "JavaScript Projects",
+    "Developer Portfolio",
+  ],
+};
 
 export default function ProjectsLayout({
   children,
@@ -19,7 +38,6 @@ export default function ProjectsLayout({
             >
               Projects
             </Link>
-
             <Link
               href="/projects/settings"
               className="text-gray-600 transition hover:text-blue-600"
@@ -29,7 +47,6 @@ export default function ProjectsLayout({
           </div>
         </nav>
       </div>
-
       {children}
     </section>
   );

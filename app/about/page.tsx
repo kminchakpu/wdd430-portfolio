@@ -1,4 +1,24 @@
+import type { Metadata } from "next";
 import SkillsCard from "@/components/SkillsCard";
+
+export const metadata: Metadata = {
+  title: "About Kevin Cross Minchakpu | Web Developer",
+  description:
+    "Learn more about Kevin Cross Minchakpu, a web developer building responsive and user-friendly applications with React, Next.js, TypeScript, Node.js, APIs, and databases.",
+  keywords: [
+    "Kevin Cross Minchakpu",
+    "Web Developer",
+    "Frontend Developer",
+    "Backend Developer",
+    "Full Stack Developer",
+    "React Developer",
+    "Next.js Developer",
+    "TypeScript",
+    "JavaScript",
+    "Node.js",
+    "Web Development",
+  ],
+};
 
 export default function About() {
   return (
@@ -7,25 +27,21 @@ export default function About() {
         <p className="text-sm font-semibold uppercase tracking-widest text-blue-600">
           About Me
         </p>
-
         <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
           A little about my background
         </h1>
-
         <div className="mt-6 space-y-5 text-lg leading-8 text-gray-600">
           <p>
             I am a web developer who enjoys creating useful, responsive, and
             user-friendly web applications. I am passionate about learning
             new technologies and continuously improving my skills.
           </p>
-
           <p>
             I am currently expanding my knowledge of frontend and backend
             development, APIs, databases, and modern web development tools.
             Through my projects and coursework, I enjoy turning ideas into
             practical web applications.
           </p>
-
           <p>
             My goal is to continue developing my technical skills while
             building applications that provide useful and enjoyable
@@ -33,7 +49,6 @@ export default function About() {
           </p>
         </div>
       </section>
-
       <SkillsCard
         title="My Technical Skills"
         skills={[
@@ -48,9 +63,9 @@ export default function About() {
           "MongoDB",
           "Git & GitHub",
           "Microsoft SQL Server",
-          "Postgres SQL",
+          "PostgreSQL",
           "Oracle DB",
-          "Python Programming"
+          "Python Programming",
         ]}
       />
     </main>
