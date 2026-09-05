@@ -11,7 +11,6 @@ export default function Header() {
         >
           Kevin Cross Minchakpu
         </Link>
-
         <NavLinks />
       </div>
     </header>
