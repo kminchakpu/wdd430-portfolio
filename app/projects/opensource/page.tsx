@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 };
 
 export default async function OpenSourceProjects() {
-  const projects = getProjects("opensource");
+  const projects = await getProjects("opensource");
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
@@ -36,7 +36,7 @@ export default async function OpenSourceProjects() {
         development journey.
       </p>
       <div className="mt-8 grid gap-6 md:grid-cols-2">
-        {(await projects).map((project) => (
+        {projects.map((project) => (
           <article
             key={project.id}
             className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
