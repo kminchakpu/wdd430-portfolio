@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   ],
 };
 
-export default function SchoolProjects() {
+export default async function SchoolProjects() {
   const projects = getProjects("school");
 
   return (
@@ -39,7 +39,7 @@ export default function SchoolProjects() {
         studies.
       </p>
       <div className="mt-8 grid gap-6 md:grid-cols-2">
-        {projects.map((project) => (
+        {(await projects).map((project) => (
           <article
             key={project.id}
             className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"

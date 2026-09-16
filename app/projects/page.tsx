@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   ],
 };
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
   const projects = getProjects();
 
   return (
@@ -39,7 +39,7 @@ export default function ProjectsPage() {
           modern web development.
         </p>
         <div className="mt-8 grid gap-6 md:grid-cols-2">
-          {projects.map((project) => (
+          {(await projects).map((project) => (
             <article
               key={project.id}
               className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
