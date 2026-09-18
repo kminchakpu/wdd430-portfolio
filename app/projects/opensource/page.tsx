@@ -23,8 +23,8 @@ export const metadata: Metadata = {
   ],
 };
 
-export default function OpenSourceProjects() {
-  const projects = getProjects("opensource");
+export default async function OpenSourceProjects() {
+  const projects = await getProjects("opensource");
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">

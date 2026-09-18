@@ -1,8 +1,9 @@
+// lib/projects-db.ts
 export interface Project {
   id: number;
   title: string;
   description: string;
-  type: "opensource" | "school";
+  type: 'opensource' | 'school';
   technologies: string[];
   link?: string;
 }
@@ -10,29 +11,26 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: 1,
-    title: "My First Open Source Contribution",
-    description: "A bug fix contributed to a popular library.",
-    type: "opensource",
-    technologies: ["TypeScript", "React"],
-    link: "https://github.com/example/repo",
+    title: 'My First Open Source Contribution',
+    description: 'A bug fix contributed to a popular library.',
+    type: 'opensource',
+    technologies: ['TypeScript', 'React'],
+    link: 'https://github.com/example/repo'
   },
   {
     id: 2,
-    title: "Database Design Final Project",
-    description: "An ER diagram and normalized schema for a library system.",
-    type: "school",
-    technologies: ["PostgreSQL", "SQL"],
-  },
+    title: 'Database Design Final Project',
+    description: 'An ER diagram and normalized schema for a library system.',
+    type: 'school',
+    technologies: ['PostgreSQL', 'SQL']
+  }
 ];
 
 export function getProjects(type?: string | null): Project[] {
-  if (type) {
-    return projects.filter((project) => project.type === type);
-  }
-
+  if (type) return projects.filter(p => p.type === type);
   return projects;
 }
 
 export function getProjectById(id: number): Project | null {
-  return projects.find((project) => project.id === id) ?? null;
+  return projects.find(p => p.id === id) ?? null;
 }
