@@ -31,3 +31,20 @@ export async function getProjects(
 
   return projects as Project[];
 }
+
+export async function getProjectById(
+  id: number
+): Promise<Project | null> {
+  const projects = await sql`
+    SELECT id, title, description, type, technologies, link
+    FROM projects
+    WHERE id = ${id}
+    LIMIT 1
+  `;
+
+  if (projects.length === 0) {
+    return null;
+  }
+
+  return projects[0] as Project;
+}
