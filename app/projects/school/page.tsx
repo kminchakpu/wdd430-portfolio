@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { getProjects } from "@/lib/projects-db";
+import { Suspense } from "react";
+import SchoolProjectList from "./SchoolProjectList";
+import SchoolProjectSkeleton from "./SchoolProjectSkeleton";
 
 export const metadata: Metadata = {
   title: "School Projects | Kevin Cross Minchakpu | Web Developer",
@@ -26,9 +28,7 @@ export const metadata: Metadata = {
   ],
 };
 
-export default async function SchoolProjects() {
-  const projects = await getProjects("school");
-
+export default function SchoolProjects() {
   return (
     <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold tracking-tight text-gray-900">
@@ -38,31 +38,9 @@ export default async function SchoolProjects() {
         Projects completed as part of my coursework and web development
         studies.
       </p>
-      <div className="mt-8 grid gap-6 md:grid-cols-2">
-        {projects.map((project) => (
-          <article
-            key={project.id}
-            className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
-          >
-            <h2 className="text-xl font-bold text-gray-900">
-              {project.title}
-            </h2>
-            <p className="mt-3 text-gray-600">
-              {project.description}
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {project.technologies.map((technology) => (
-                <span
-                  key={technology}
-                  className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700"
-                >
-                  {technology}
-                </span>
-              ))}
-            </div>
-          </article>
-        ))}
-      </div>
+      <Suspense fallback={<SchoolProjectSkeleton />}>
+        <SchoolProjectList />
+      </Suspense>
     </main>
   );
 }
