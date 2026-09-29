@@ -1,12 +1,17 @@
 import { NextResponse } from "next/server";
 import { getProjectById } from "@/lib/projects-db";
 
+interface RouteContext {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
 export async function GET(
   _request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: RouteContext
 ) {
   const { id } = await params;
-
   const projectId = Number(id);
 
   if (Number.isNaN(projectId)) {
