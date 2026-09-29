@@ -9,6 +9,14 @@ export interface Project {
   link?: string;
 }
 
+export interface ProjectInput {
+  title: string;
+  description: string;
+  type: "opensource" | "school";
+  technologies: string[];
+  link?: string;
+}
+
 export async function getProjects(
   type?: string | null
 ): Promise<Project[]> {
@@ -47,6 +55,65 @@ export async function getProjectById(
   }
 
   return projects[0] as Project;
+}
+
+export async function createProject(
+  project: ProjectInput
+): Promise<Project> {
+  const projects = await sql`
+    INSERT INTO projects (
+      title,
+      description,
+      type,
+      technologies,
+      link
+    )
+    VALUES (
+      ${project.title},
+      ${project.description},
+      ${project.type},
+      ${project.technologies},
+      ${project.link || null}
+    )
+    RETURNING id, title, description, type, technologies, link
+  `;
+
+  return projects[0] as Project;
+}
+
+export async function updateProject(
+  id: number,
+  project: ProjectInput
+): Promise<Project | null> {
+  const projects = await sql`
+    UPDATE projects
+    SET
+      title = ${project.title},
+      description = ${project.description},
+      type = ${project.type},
+      technologies = ${project.technologies},
+      link = ${project.link || null}
+    WHERE id = ${id}
+    RETURNING id, title, description, type, technologies, link
+  `;
+
+  if (projects.length === 0) {
+    return null;
+  }
+
+  return projects[0] as Project;
+}
+
+export async function deleteProject(
+  id: number
+): Promise<boolean> {
+  const projects = await sql`
+    DELETE FROM projects
+    WHERE id = ${id}
+    RETURNING id
+  `;
+
+  return projects.length > 0;
 }
 
 const PROJECTS_PER_PAGE = 4;
