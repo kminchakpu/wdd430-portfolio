@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { deleteProject } from "@/lib/actions";
 
 interface DeleteProjectButtonProps {
   projectId: number;
@@ -29,19 +30,10 @@ export default function DeleteProjectButton({
     setIsDeleting(true);
 
     try {
-      const response = await fetch(`/api/projects/${projectId}`, {
-        method: "DELETE",
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error || "Unable to delete project.");
-        return;
-      }
-
+      await deleteProject(projectId);
       router.refresh();
-    } catch {
+    } catch (error) {
+      console.error("Delete project error:", error);
       setError(
         "Something went wrong while deleting the project."
       );

@@ -7,27 +7,11 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
+      const isDashboardPage =
+        nextUrl.pathname.startsWith("/dashboard");
 
-      const isSettingsPage =
-        nextUrl.pathname.startsWith("/projects/settings");
-
-      const isNewProjectPage =
-        nextUrl.pathname === "/projects/new";
-
-      const isEditProjectPage =
-        /^\/projects\/\d+\/edit$/.test(nextUrl.pathname);
-
-      const isProtected =
-        isSettingsPage ||
-        isNewProjectPage ||
-        isEditProjectPage;
-
-      if (isProtected) {
-        if (isLoggedIn) {
-          return true;
-        }
-
-        return false;
+      if (isDashboardPage) {
+        return isLoggedIn;
       }
 
       if (
@@ -35,7 +19,7 @@ export const authConfig = {
         nextUrl.pathname === "/login"
       ) {
         return Response.redirect(
-          new URL("/projects/settings", nextUrl)
+          new URL("/dashboard/projects", nextUrl)
         );
       }
 

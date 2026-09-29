@@ -1,7 +1,11 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  createProject,
+  updateProject,
+} from "@/lib/actions";
 import type { Project } from "@/lib/projects-db";
 
 interface ProjectFormProps {
@@ -13,73 +17,29 @@ export default function ProjectForm({
 }: ProjectFormProps) {
   const router = useRouter();
   const isEditing = Boolean(project);
-
-  const [title, setTitle] = useState(project?.title || "");
-  const [description, setDescription] = useState(
-    project?.description || ""
-  );
-  const [type, setType] = useState<"opensource" | "school">(
-    project?.type || "school"
-  );
-  const [technologies, setTechnologies] = useState(
-    project?.technologies.join(", ") || ""
-  );
-  const [link, setLink] = useState(project?.link || "");
-  const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  async function handleSubmit(
-    event: FormEvent<HTMLFormElement>
-  ) {
-    event.preventDefault();
-    setError("");
+  async function handleSubmit(formData: FormData) {
     setIsSubmitting(true);
-
-    const projectData = {
-      title: title.trim(),
-      description: description.trim(),
-      type,
-      technologies: technologies
-        .split(",")
-        .map((technology) => technology.trim())
-        .filter(Boolean),
-      link: link.trim(),
-    };
+    setError("");
 
     try {
-      const url = isEditing
-        ? `/api/projects/${project?.id}`
-        : "/api/projects";
-
-      const method = isEditing ? "PUT" : "POST";
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(projectData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error || "Unable to save project.");
-        return;
+      if (project) {
+        await updateProject(project.id, formData);
+      } else {
+        await createProject(formData);
       }
-
-      router.push("/projects/settings");
-      router.refresh();
-    } catch {
+    } catch (error) {
+      console.error("Project form error:", error);
       setError("Something went wrong while saving the project.");
-    } finally {
       setIsSubmitting(false);
     }
   }
 
   return (
     <form
-      onSubmit={handleSubmit}
+      action={handleSubmit}
       className="space-y-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
     >
       <div>
@@ -91,9 +51,9 @@ export default function ProjectForm({
         </label>
         <input
           id="title"
+          name="title"
           type="text"
-          value={title}
-          onChange={(event) => setTitle(event.target.value)}
+          defaultValue={project?.title || ""}
           required
           className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
         />
@@ -108,10 +68,8 @@ export default function ProjectForm({
         </label>
         <textarea
           id="description"
-          value={description}
-          onChange={(event) =>
-            setDescription(event.target.value)
-          }
+          name="description"
+          defaultValue={project?.description || ""}
           required
           rows={5}
           className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
@@ -127,12 +85,8 @@ export default function ProjectForm({
         </label>
         <select
           id="type"
-          value={type}
-          onChange={(event) =>
-            setType(
-              event.target.value as "opensource" | "school"
-            )
-          }
+          name="type"
+          defaultValue={project?.type || "school"}
           className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
         >
           <option value="school">School</option>
@@ -149,11 +103,9 @@ export default function ProjectForm({
         </label>
         <input
           id="technologies"
+          name="technologies"
           type="text"
-          value={technologies}
-          onChange={(event) =>
-            setTechnologies(event.target.value)
-          }
+          defaultValue={project?.technologies.join(", ") || ""}
           required
           placeholder="Next.js, TypeScript, PostgreSQL"
           className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
@@ -172,9 +124,9 @@ export default function ProjectForm({
         </label>
         <input
           id="link"
+          name="link"
           type="url"
-          value={link}
-          onChange={(event) => setLink(event.target.value)}
+          defaultValue={project?.link || ""}
           placeholder="https://example.com"
           className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
         />
@@ -204,8 +156,9 @@ export default function ProjectForm({
 
         <button
           type="button"
-          onClick={() => router.push("/projects/settings")}
-          className="rounded-lg border border-gray-300 px-5 py-3 font-semibold text-gray-700 transition hover:bg-gray-50"
+          onClick={() => router.push("/dashboard/projects")}
+          disabled={isSubmitting}
+          className="rounded-lg border border-gray-300 px-5 py-3 font-semibold text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
         >
           Cancel
         </button>

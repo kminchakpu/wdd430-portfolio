@@ -40,11 +40,9 @@ export default async function EditProjectPage({
         <p className="text-sm font-semibold uppercase tracking-wider text-blue-600">
           Portfolio Admin
         </p>
-
         <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900">
           Edit Project
         </h1>
-
         <p className="mt-3 text-gray-600">
           Update the information for {project.title}.
         </p>

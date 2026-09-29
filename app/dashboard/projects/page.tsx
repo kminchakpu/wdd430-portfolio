@@ -6,16 +6,15 @@ import SignOutButton from "@/components/SignOutButton";
 import DeleteProjectButton from "@/components/DeleteProjectButton";
 
 export const metadata: Metadata = {
-  title: "Project Settings | Kevin",
-  description:
-    "Manage and configure settings for the projects section of Kevin's web development portfolio.",
+  title: "Project Dashboard | Kevin",
+  description: "Manage Kevin's portfolio projects.",
   robots: {
     index: false,
     follow: false,
   },
 };
 
-export default async function ProjectsSettings() {
+export default async function DashboardProjectsPage() {
   const session = await auth();
   const projects = await getProjects();
   const user = session?.user;
@@ -29,7 +28,7 @@ export default async function ProjectsSettings() {
               Portfolio Admin
             </p>
             <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900">
-              Project Settings
+              Project Dashboard
             </h1>
             <p className="mt-3 text-gray-600">
               Manage the projects displayed in your portfolio.
@@ -37,7 +36,7 @@ export default async function ProjectsSettings() {
           </div>
 
           <Link
-            href="/projects/new"
+            href="/dashboard/projects/new"
             className="inline-flex w-fit rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700"
           >
             Add New Project
@@ -50,11 +49,9 @@ export default async function ProjectsSettings() {
               <h2 className="text-lg font-semibold text-gray-900">
                 Signed In
               </h2>
-
               <p className="mt-1 text-gray-600">
                 Welcome, {user?.name || "User"}.
               </p>
-
               {user?.email && (
                 <p className="mt-1 text-sm text-gray-500">
                   {user.email}
@@ -71,7 +68,6 @@ export default async function ProjectsSettings() {
             <h2 className="text-2xl font-bold text-gray-900">
               Manage Projects
             </h2>
-
             <p className="mt-1 text-gray-600">
               Edit or delete your existing portfolio projects.
             </p>
@@ -112,7 +108,7 @@ export default async function ProjectsSettings() {
 
                     <div className="flex flex-wrap gap-3">
                       <Link
-                        href={`/projects/${project.id}/edit`}
+                        href={`/dashboard/projects/${project.id}/edit`}
                         className="rounded-lg border border-blue-600 px-4 py-2 text-sm font-semibold text-blue-600 transition hover:bg-blue-50"
                       >
                         Edit
