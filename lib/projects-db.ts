@@ -25,7 +25,7 @@ export async function getProjects(
       SELECT id, title, description, type, technologies, link
       FROM projects
       WHERE type = ${type}
-      ORDER BY id ASC
+      ORDER BY id DESC
     `;
 
     return projects as Project[];
@@ -34,7 +34,7 @@ export async function getProjects(
   const projects = await sql`
     SELECT id, title, description, type, technologies, link
     FROM projects
-    ORDER BY id ASC
+    ORDER BY id DESC
   `;
 
   return projects as Project[];
@@ -116,55 +116,51 @@ export async function deleteProject(
   return projects.length > 0;
 }
 
-const PROJECTS_PER_PAGE = 4;
-
+/**
+ * Fetch projects using search and pagination.
+ */
 export async function fetchFilteredProjects(
   query: string,
   currentPage: number
 ): Promise<Project[]> {
-  const offset = (currentPage - 1) * PROJECTS_PER_PAGE;
-  const searchTerm = `%${query}%`;
+  const ITEMS_PER_PAGE = 6;
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  const searchQuery = `%${query}%`;
 
   const projects = await sql`
     SELECT id, title, description, type, technologies, link
     FROM projects
     WHERE
-      title ILIKE ${searchTerm}
-      OR description ILIKE ${searchTerm}
-      OR type ILIKE ${searchTerm}
-      OR EXISTS (
-        SELECT 1
-        FROM unnest(technologies) AS technology
-        WHERE technology ILIKE ${searchTerm}
-      )
-    ORDER BY id ASC
-    LIMIT ${PROJECTS_PER_PAGE}
+      title ILIKE ${searchQuery}
+      OR description ILIKE ${searchQuery}
+      OR type ILIKE ${searchQuery}
+    ORDER BY id DESC
+    LIMIT ${ITEMS_PER_PAGE}
     OFFSET ${offset}
   `;
 
   return projects as Project[];
 }
 
+/**
+ * Get the total number of pages for filtered projects.
+ */
 export async function fetchProjectsPages(
   query: string
 ): Promise<number> {
-  const searchTerm = `%${query}%`;
+  const ITEMS_PER_PAGE = 6;
+  const searchQuery = `%${query}%`;
 
-  const rows = await sql`
-    SELECT COUNT(*) AS count
+  const result = await sql`
+    SELECT COUNT(*)::int AS count
     FROM projects
     WHERE
-      title ILIKE ${searchTerm}
-      OR description ILIKE ${searchTerm}
-      OR type ILIKE ${searchTerm}
-      OR EXISTS (
-        SELECT 1
-        FROM unnest(technologies) AS technology
-        WHERE technology ILIKE ${searchTerm}
-      )
+      title ILIKE ${searchQuery}
+      OR description ILIKE ${searchQuery}
+      OR type ILIKE ${searchQuery}
   `;
 
-  const totalProjects = Number(rows[0].count);
+  const count = Number(result[0]?.count ?? 0);
 
-  return Math.ceil(totalProjects / PROJECTS_PER_PAGE);
+  return Math.ceil(count / ITEMS_PER_PAGE);
 }
