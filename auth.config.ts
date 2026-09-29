@@ -7,9 +7,20 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isProtected = nextUrl.pathname.startsWith(
-        "/projects/settings"
-      );
+
+      const isSettingsPage =
+        nextUrl.pathname.startsWith("/projects/settings");
+
+      const isNewProjectPage =
+        nextUrl.pathname === "/projects/new";
+
+      const isEditProjectPage =
+        /^\/projects\/\d+\/edit$/.test(nextUrl.pathname);
+
+      const isProtected =
+        isSettingsPage ||
+        isNewProjectPage ||
+        isEditProjectPage;
 
       if (isProtected) {
         if (isLoggedIn) {
@@ -19,7 +30,10 @@ export const authConfig = {
         return false;
       }
 
-      if (isLoggedIn && nextUrl.pathname === "/login") {
+      if (
+        isLoggedIn &&
+        nextUrl.pathname === "/login"
+      ) {
         return Response.redirect(
           new URL("/projects/settings", nextUrl)
         );
