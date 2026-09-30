@@ -17,7 +17,8 @@ export async function generateMetadata({
 
   if (Number.isNaN(projectId)) {
     return {
-      title: "Project Not Found | Kevin",
+      title: "Project Not Found",
+      description: "The requested portfolio project could not be found.",
     };
   }
 
@@ -25,12 +26,13 @@ export async function generateMetadata({
 
   if (!project) {
     return {
-      title: "Project Not Found | Kevin",
+      title: "Project Not Found",
+      description: "The requested portfolio project could not be found.",
     };
   }
 
   return {
-    title: `${project.title} | Kevin`,
+    title: project.title,
     description: project.description,
   };
 }

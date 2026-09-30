@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getProjects } from "@/lib/projects-db";
 
 export const metadata: Metadata = {
-  title: "Open Source Projects | Kevin Cross Minchakpu | Web Developer",
+  title: "Open Source Projects",
   description:
     "Explore Kevin's open source projects and web development work using React, Next.js, TypeScript, JavaScript, APIs, databases, and other modern technologies.",
   keywords: [

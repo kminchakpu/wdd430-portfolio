@@ -11,9 +11,15 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Kevin Minchakpu | Web Developer",
+  title: {
+    default: "Kevin Minchakpu | Web Developer",
+    template: "%s | Kevin Minchakpu",
+  },
   description:
     "Personal portfolio of Kevin Minchakpu, a web developer building responsive and useful web applications.",
+  metadataBase: new URL(
+    "https://wdd430-portfolio-chi-nine.vercel.app/"
+  ),
 };
 
 export default function RootLayout({

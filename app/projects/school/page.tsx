@@ -4,7 +4,7 @@ import SchoolProjectList from "./SchoolProjectList";
 import SchoolProjectSkeleton from "./SchoolProjectSkeleton";
 
 export const metadata: Metadata = {
-  title: "School Projects | Kevin Cross Minchakpu | Web Developer",
+  title: "School Projects",
   description:
     "Explore Kevin's school projects completed through web development and software development coursework, featuring practical work with modern programming languages, frameworks, APIs, and databases.",
   keywords: [
